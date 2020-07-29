@@ -5,26 +5,34 @@ import os
 from flask import Flask, jsonify, make_response
 from flask_cors import CORS
 from flask_swagger_ui import get_swaggerui_blueprint
-from routes import request_api
+from routes import request_api, movies_api
+from models import Movie, setup_db
 
-APP = Flask(__name__)
+def setup_swagger_ui(app):
+    ### swagger specific ###
+    SWAGGER_URL = '/swagger'
+    API_URL = '/static/swagger.json'
+    SWAGGERUI_BLUEPRINT = get_swaggerui_blueprint(
+        SWAGGER_URL,
+        API_URL,
+        config={
+            'app_name': "Casting Agency FSND Capstone"
+        }
+    )
+    app.register_blueprint(SWAGGERUI_BLUEPRINT, url_prefix=SWAGGER_URL)
+    ### end swagger specific ###
 
-### swagger specific ###
-SWAGGER_URL = '/swagger'
-API_URL = '/static/swagger.json'
-SWAGGERUI_BLUEPRINT = get_swaggerui_blueprint(
-    SWAGGER_URL,
-    API_URL,
-    config={
-        'app_name': "Seans-Python-Flask-REST-Boilerplate"
-    }
-)
-APP.register_blueprint(SWAGGERUI_BLUEPRINT, url_prefix=SWAGGER_URL)
-### end swagger specific ###
+    app.register_blueprint(request_api.get_blueprint())
+    app.register_blueprint(movies_api.get_blueprint(), url_prefix="/api/movies")
 
+def create_app(test_config=None):
+    app = Flask(__name__)
+    CORS(app)
+    setup_swagger_ui(app)
+    setup_db(app)
+    return app
 
-APP.register_blueprint(request_api.get_blueprint())
-
+APP = create_app()
 
 @APP.errorhandler(400)
 def handle_400_error(_error):
@@ -53,7 +61,7 @@ def handle_500_error(_error):
 if __name__ == '__main__':
 
     PARSER = argparse.ArgumentParser(
-        description="Seans-Python-Flask-REST-Boilerplate")
+        description="Casting Agency - FSND Capstone App")
 
     PARSER.add_argument('--debug', action='store_true',
                         help="Use flask debug/dev mode with file change reloading")
@@ -63,7 +71,6 @@ if __name__ == '__main__':
 
     if ARGS.debug:
         print("Running in debug mode")
-        CORS = CORS(APP)
         APP.run(host='0.0.0.0', port=PORT, debug=True)
     else:
         APP.run(host='0.0.0.0', port=PORT, debug=False)

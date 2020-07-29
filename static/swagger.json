@@ -1,9 +1,9 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "description": "sean",
+    "description": "Movies",
     "version": "1.0.0",
-    "title": "FSND-Capstone",
+    "title": "Casting Agency - FSND Capstone App",
     "license": {
       "name": "MIT",
       "url": "https://opensource.org/licenses/MIT"
@@ -16,59 +16,32 @@
   ],
   "tags": [
     {
-      "name": "Book Request",
-      "description": "Example API for requesting and return book requests"
+      "name": "Movie Request",
+      "description": "API for requesting and return movie information"
+    },
+    {
+      "name": "Actor Request",
+      "description": "PI for requesting and return actor information"
     }
   ],
   "paths": {
-    "/request": {
+    "/api/movies": {
       "get": {
         "tags": [
-          "Book Request"
+          "Movie Request"
         ],
-        "summary": "Returns bookRequests",
+        "summary": "Returns MovieList",
         "responses": {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/components/schemas/bookRequests"
+              "$ref": "#/components/schemas/MovieList"
             }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Book Request"
-        ],
-        "summary": "Create a new book request system",
-        "requestBody": {
-          "description": "Book Request Post Object",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/bookRequestPostBody"
-              }
-            }
-          }
-        },
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "201": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/components/schemas/id"
-            }
-          },
-          "400": {
-            "description": "Failed. Bad post data."
           }
         }
       }
     },
-    "/request/{id}": {
+    "/api/movies/{id}": {
       "parameters": [
         {
           "name": "id",
@@ -80,15 +53,15 @@
       ],
       "get": {
         "tags": [
-          "Book Request"
+          "Movie Request"
         ],
-        "summary": "Get book request with given ID",
+        "summary": "Get Movie with given ID",
         "parameters": [
           {
             "in": "path",
             "name": "id",
             "required": true,
-            "description": "Book Request id",
+            "description": "Movie id",
             "schema": {
               "$ref": "#/components/schemas/id"
             }
@@ -98,7 +71,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/components/schemas/bookRequest"
+              "$ref": "#/components/schemas/Movie"
             }
           },
           "400": {
@@ -108,79 +81,6 @@
             "description": "Failed. Book request not found."
           }
         }
-      },
-      "put": {
-        "summary": "edit a book request by ID",
-        "tags": [
-          "Book Request"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "Book Request id",
-            "schema": {
-              "$ref": "#/components/schemas/id"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Book Request Object",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/bookRequest"
-              }
-            }
-          }
-        },
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/components/schemas/bookRequest"
-            }
-          },
-          "400": {
-            "description": "Failed. Bad post data."
-          }
-        }
-      },
-      "delete": {
-        "summary": "Delete Book Request by ID",
-        "tags": [
-          "Book Request"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "Book Request Id",
-            "schema": {
-              "$ref": "#/components/schemas/id"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/components/schemas/id"
-            }
-          },
-          "400": {
-            "description": "Failed. Misunderstood Request."
-          },
-          "404": {
-            "description": "Failed. Book Request not found."
-          }
-        }
       }
     }
   },
@@ -188,49 +88,100 @@
     "schemas": {
       "id": {
         "properties": {
-          "uuid": {
+          "id": {
             "type": "string"
           }
         }
       },
-      "bookRequestPostBody": {
+      "MovieRequestPostBody": {
         "type": "object",
         "properties": {
           "title": {
             "type": "string",
             "format": "string"
           },
-          "email": {
-            "type": "string",
-            "format": "email"
-          }
-        }
-      },
-      "bookRequest": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string",
-            "format": "string"
-          },
-          "email": {
-            "type": "string",
-            "format": "email"
-          },
-          "timestamp": {
+          "release_date": {
             "type": "string",
             "format": "number"
           }
         }
       },
-      "bookRequests": {
+      "Movie": {
         "type": "object",
         "properties": {
-          "bookRequest": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/bookRequest"
+          "id": {
+            "type": "string",
+            "format": "number"
+          },
+          "title": {
+            "type": "string",
+            "format": "string"
+          },
+          "releasedate": {
+            "type": "string",
+            "format": "number"
+          },
+          "actors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Actor"
             }
+          }
+        }
+      },
+      "MovieList": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "type": "number"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Movie"
+            }
+          }
+        }
+      },
+      "Actor": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "gender": {
+            "type": "string",
+            "enum": [
+              "Male", "Female", "Unknown"
+            ]
+          }
+        }
+      },
+      "Gender": {
+        "type": "string",
+        "enum": [
+          "Male", "Female", "Unknown"
+        ]
+      },
+      "ApiError": {
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "error": {
+            "type": "number"
+          },
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
           }
         }
       }
