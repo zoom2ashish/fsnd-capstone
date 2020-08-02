@@ -24,6 +24,11 @@
       "description": "PI for requesting and return actor information"
     }
   ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
   "paths": {
     "/api/movies": {
       "get": {
@@ -342,6 +347,14 @@
     }
   },
   "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Enter JWT Bearer token **_only_**"
+      }
+    },
     "schemas": {
       "id": {
         "properties": {
