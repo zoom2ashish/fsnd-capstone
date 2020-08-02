@@ -5,8 +5,9 @@ import os
 from flask import Flask, jsonify, make_response
 from flask_cors import CORS
 from flask_swagger_ui import get_swaggerui_blueprint
-from routes import request_api, movies_api
+from routes import request_api, movies_api, actors_api
 from models import Movie, setup_db
+from werkzeug import exceptions
 
 def setup_swagger_ui(app):
     ### swagger specific ###
@@ -24,6 +25,7 @@ def setup_swagger_ui(app):
 
     app.register_blueprint(request_api.get_blueprint())
     app.register_blueprint(movies_api.get_blueprint(), url_prefix="/api/movies")
+    app.register_blueprint(actors_api.get_blueprint(), url_prefix="/api/actors")
 
 def create_app(test_config=None):
     app = Flask(__name__)

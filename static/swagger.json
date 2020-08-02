@@ -39,6 +39,37 @@
             }
           }
         }
+      },
+      "post": {
+        "tags": [
+          "Movie Request"
+        ],
+        "summary": "Add Movie",
+        "requestBody": {
+          "description": "Movie Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MovieRequestPostBody"
+              }
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/Movie"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
       }
     },
     "/api/movies/{id}": {
@@ -81,6 +112,232 @@
             "description": "Failed. Book request not found."
           }
         }
+      },
+      "patch": {
+        "tags": [
+          "Movie Request"
+        ],
+        "summary": "Update Movie Details",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Movie id",
+            "schema": {
+              "$ref": "#/components/schemas/id"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Movie Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MovieRequestPostBody"
+              }
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/Movie"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Movie Request by ID",
+        "tags": [
+          "Movie Request"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Movie Id",
+            "schema": {
+              "$ref": "#/components/schemas/id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/id"
+            }
+          },
+          "400": {
+            "description": "Failed. Misunderstood Request."
+          },
+          "404": {
+            "description": "Failed. Book Request not found."
+          }
+        }
+      }
+    },
+    "/api/actors": {
+      "get": {
+        "tags": [
+          "Actor Request"
+        ],
+        "summary": "Returns ActorList",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/ActorList"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Actor Request"
+        ],
+        "summary": "Add Actor",
+        "requestBody": {
+          "description": "Actor Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActorRequestPostBody"
+              }
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/Actor"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
+    },
+    "/api/actors/{id}": {
+      "get": {
+        "tags": [
+          "Actor Request"
+        ],
+        "summary": "Get Actor with given ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Actor id",
+            "schema": {
+              "$ref": "#/components/schemas/id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/Actor"
+            }
+          },
+          "400": {
+            "description": "Failed. Misunderstood Request."
+          },
+          "404": {
+            "description": "Failed. Book request not found."
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Actor Request"
+        ],
+        "summary": "Update Actor Details",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Actor id",
+            "schema": {
+              "$ref": "#/components/schemas/id"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Actor Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActorRequestPostBody"
+              }
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/Actor"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Actor Request by ID",
+        "tags": [
+          "Actor Request"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Actor Id",
+            "schema": {
+              "$ref": "#/components/schemas/id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/id"
+            }
+          },
+          "400": {
+            "description": "Failed. Misunderstood Request."
+          },
+          "404": {
+            "description": "Failed. Book Request not found."
+          }
+        }
       }
     }
   },
@@ -89,7 +346,7 @@
       "id": {
         "properties": {
           "id": {
-            "type": "string"
+            "type": "number"
           }
         }
       },
@@ -101,8 +358,7 @@
             "format": "string"
           },
           "release_date": {
-            "type": "string",
-            "format": "number"
+            "type": "number"
           }
         }
       },
@@ -110,16 +366,14 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "string",
-            "format": "number"
+            "type": "number"
           },
           "title": {
             "type": "string",
             "format": "string"
           },
           "releasedate": {
-            "type": "string",
-            "format": "number"
+            "type": "number"
           },
           "actors": {
             "type": "array",
@@ -147,23 +401,48 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "string"
+            "type": "number"
           },
           "name": {
             "type": "string"
           },
           "gender": {
-            "type": "string",
-            "enum": [
-              "Male", "Female", "Unknown"
-            ]
+            "$ref": "#/components/schemas/Gender"
+          }
+        }
+      },
+      "ActorList": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "type": "number"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Actor"
+            }
+          }
+        }
+      },
+      "ActorRequestPostBody": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "age": {
+            "type": "number"
+          },
+          "gender": {
+            "$ref": "#/components/schemas/Gender"
           }
         }
       },
       "Gender": {
         "type": "string",
         "enum": [
-          "Male", "Female", "Unknown"
+          "M", "F", "U"
         ]
       },
       "ApiError": {
