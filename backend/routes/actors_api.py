@@ -1,6 +1,6 @@
 from flask import jsonify, abort, request, Blueprint
 from enum import Enum
-from models import Actor
+from backend.models import Actor
 import json
 
 class Gender(Enum):

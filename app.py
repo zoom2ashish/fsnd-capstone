@@ -2,11 +2,11 @@
 
 import argparse
 import os
-from flask import Flask, jsonify, make_response
+from flask import Flask, jsonify, make_response, render_template
 from flask_cors import CORS
 from flask_swagger_ui import get_swaggerui_blueprint
-from routes import request_api, movies_api, actors_api
-from models import Movie, setup_db
+from backend.routes import request_api, movies_api, actors_api
+from backend.models import Movie, setup_db
 from werkzeug import exceptions
 
 def setup_swagger_ui(app):
@@ -28,13 +28,18 @@ def setup_swagger_ui(app):
     app.register_blueprint(actors_api.get_blueprint(), url_prefix="/api/actors")
 
 def create_app(test_config=None):
-    app = Flask(__name__)
+    app = Flask(__name__, static_folder="build", template_folder="build", static_url_path="/")
     CORS(app)
     setup_swagger_ui(app)
     setup_db(app)
     return app
 
 APP = create_app()
+
+''' Default UI Route '''
+@APP.route("/")
+def hello():
+    return render_template('index.html')
 
 @APP.errorhandler(400)
 def handle_400_error(_error):

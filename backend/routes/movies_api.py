@@ -1,8 +1,8 @@
 import uuid
 from datetime import datetime, timedelta
 from flask import jsonify, abort, request, Blueprint
-from models import Movie
-from utils.datetime_utils import isValidDateTime
+from backend.models import Movie
+from backend.utils.datetime_utils import isValidDateTime
 import json
 import math
 
