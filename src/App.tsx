@@ -1,25 +1,23 @@
 import React from 'react';
-import logo from './logo.svg';
+import {withRouter, Switch, Redirect, Route} from 'react-router-dom';
+import Movies from './containers/Movies/Movies';
 import './App.css';
+import Layout from './containers/Layout/Layout';
+import Actors from './containers/Actors/Actors';
 
 function App() {
+  let routes = (
+    <Switch>
+      <Route exact path="/movies" component={Movies}></Route>
+      <Route exact path="/actors" component={Actors}></Route>
+      <Redirect to="/movies"></Redirect>
+    </Switch>
+  );
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Layout>
+      {routes}
+    </Layout>
   );
 }
 

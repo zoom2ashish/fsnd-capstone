@@ -1,0 +1,13 @@
+.Movie {
+}
+
+.Release_Date {
+  font-size: 14px;
+  color: #777777;
+}
+
+.ActionButtons {
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+}

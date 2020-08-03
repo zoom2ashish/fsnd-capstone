@@ -68,11 +68,8 @@ def edit_movie(id):
       abort(400, 'Invalid movie id.')
 
     data = json.loads(request.data)
-    title = data['title']
-    release_date = data['release_date']
-
-    if (title is not None) and (len(title.strip()) > 0):
-      movie.title = title
+    movie.title = data.get('title', movie.title)
+    release_date = data.get('release_date', movie.release_date)
 
     if (isinstance(release_date, int) and isValidDateTime(release_date)):
       movie.release_date = release_date
