@@ -1,14 +1,16 @@
-import React from 'react';
-import {withRouter, Switch, Redirect, Route} from 'react-router-dom';
-import Movies from './containers/Movies/Movies';
 import './App.css';
-import Layout from './containers/Layout/Layout';
+
+import React from 'react';
+import { Redirect, Route, Switch } from 'react-router-dom';
+
 import Actors from './containers/Actors/Actors';
+import Layout from './containers/Layout/Layout';
+import Movies from './containers/Movies/Movies';
 
 function App() {
   let routes = (
     <Switch>
-      <Route exact path="/movies" component={Movies}></Route>
+      <Route path="/movies" component={Movies}></Route>
       <Route exact path="/actors" component={Actors}></Route>
       <Redirect to="/movies"></Redirect>
     </Switch>

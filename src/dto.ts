@@ -12,6 +12,14 @@ export interface ActorDto {
   movies: MovieDto[];
 }
 
+export interface ActorPostRequestDto {
+  id?: number;
+  name: string;
+  age: number;
+  gender: Gender;
+  movies?: number[];
+}
+
 export interface ActorListResultDto {
   count: number;
   results: ActorDto[];
@@ -22,6 +30,13 @@ export interface MovieDto {
   title: string;
   release_date?: number;
   actors?: ActorDto[]
+}
+
+export interface MoviePostRequestDto {
+  id?: number;
+  title: string;
+  release_date?: number;
+  actors: number[];
 }
 
 export interface MovieListResultDto {
