@@ -11,4 +11,5 @@ manager.add_command('db', MigrateCommand)
 
 
 if __name__ == '__main__':
+    db.drop_all()
     manager.run()

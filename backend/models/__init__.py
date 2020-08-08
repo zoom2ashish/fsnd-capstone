@@ -21,9 +21,11 @@ def setup_db(app, database_path=database_path):
     db.app = app
     db.init_app(app)
 
-def db_drop_and_create_all():
+def db_create_all():
+  db.create_all()
+
+def db_drop_all():
     db.drop_all()
-    db.create_all()
 
 '''
   Define Many to Many relationship between movies and actors table
