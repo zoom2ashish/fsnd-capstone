@@ -1,8 +1,7 @@
 import datetime
 
-def isValidDateTime(timestamp):
+def isValidDateTimeInSeconds(timestamp_in_seconds):
   try:
-    timestamp_in_seconds = timestamp / 1000
     datetime.datetime.fromtimestamp(timestamp_in_seconds)
     return True
   except:

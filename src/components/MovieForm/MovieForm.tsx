@@ -5,11 +5,13 @@ import Modal from 'react-bootstrap/Modal';
 import FocusTrap from 'react-focus-trap';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import Select, { ValueType } from 'react-select';
-
+import DatePicker from 'react-datepicker';
 import { ActorListResultDto, MovieDto, MoviePostRequestDto } from '../../dto';
+import "react-datepicker/dist/react-datepicker.css";
 
 export interface MovieFormProps {
   show: boolean;
+  isEditing?: boolean;
   data?: MovieDto;
   onClose: () => void;
 }
@@ -23,10 +25,14 @@ const MovieForm = (
   props: React.PropsWithChildren<MovieFormProps> & RouteComponentProps
 ) => {
   const movie = props.data || null;
+  const initialReleaseDate = (movie && movie.release_date) ? new Date(movie.release_date * 1000) : new Date(); // "release_date" in seconds, whereas Date expects milliseconds
   const initialSelectedActors = (
     (movie && movie.actors) ||
     []
   ).map((actor) => ({ value: actor.id, label: actor.name }));
+
+  const [error, setError] = useState<string>('');
+  const [releaseDate, setReleaseDate] = useState<Date>(initialReleaseDate)
   const [title, setTitle] = useState<string>((movie && movie.title) || "");
   const [allActors, setAllActors] = useState<OptionType[]>(
     initialSelectedActors
@@ -57,28 +63,42 @@ const MovieForm = (
   const onSubmit = () => {
     const updatedMovie: MoviePostRequestDto = {
       title: title,
-      release_date: 0,
+      release_date: Math.round(releaseDate.getTime() / 1000), // Time in seconds
       actors: (selectedActors || []).map((actor: OptionType) => actor.value),
     };
-
-    props.onClose();
+    const url = props.isEditing ? `/api/movies/${movie?.id}` : '/api/movies';
+    fetch(url, {
+      method: props.isEditing ? 'PATCH' : 'POST',
+      body: JSON.stringify(updatedMovie)
+    }).then(() => {
+      props.onClose();
+    }).catch((e: Error) => {
+      setError('Failed to create movie.' + e.message);
+    });
   };
 
   return (
     <Modal show={props.show} onHide={props.onClose}>
       <FocusTrap active={props.show}>
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Title>{props.isEditing ? 'Edit Movie' : 'Add Movie'}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
-            <Form.Group controlId="moveiForm.title">
+            <Form.Group controlId="movieForm.title">
               <Form.Label>Movie Title</Form.Label>
               <Form.Control
                 type="text"
                 value={title}
                 placeholder="Enter Movie Title"
                 onChange={(event) => setTitle(event.target.value)}
+              />
+            </Form.Group>
+            <Form.Group controlId="movieForm.release_date">
+              <Form.Label>Movie Title</Form.Label>
+              <DatePicker
+                selected={releaseDate}
+                onChange={(selectedDate: Date) => setReleaseDate(selectedDate)}
               />
             </Form.Group>
             <Form.Group controlId="movieForm.actors">

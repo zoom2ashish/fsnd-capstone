@@ -8,6 +8,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import Movie from '../../components/Movie/Movie';
 import { MovieDto } from '../../dto';
 import MovieForm from '../../components/MovieForm/MovieForm';
+import * as axiosMovies from '../../services/axios-movies';
 
 export interface MoviesProps{
 }
@@ -19,17 +20,17 @@ export interface ModalData {
 }
 
 const Movies = (props: React.PropsWithChildren<MoviesProps> & RouteComponentProps<{id?: string|undefined}>) => {
-  const [movieItems, setMovieItems] = useState([]);
+  const [movieItems, setMovieItems] = useState<MovieDto[]>([]);
   const [modalData, setModalData] = useState<ModalData>({
     visible: false,
     isEditing: false
   });
 
   useEffect(() => {
-      fetch('/api/movies').then(response => response.json()).then(data => {
+      axiosMovies.fetchMovies().then(data => {
         setMovieItems(data.results);
       })
-  }, []);
+  }, [modalData.visible]);
 
   const onMovieAddClicked = () => {
     setModalData({
@@ -53,21 +54,26 @@ const Movies = (props: React.PropsWithChildren<MoviesProps> & RouteComponentProp
   const handleModalClose = () => {
     setModalData({
       visible: false,
-      isEditing: false,
-
+      isEditing: false
     });
+
   };
 
-  const movieListItems = movieItems.map((movieItem: MovieDto) => {
-    return (
-        <Movie
-          key={movieItem.id}
-          data={movieItem}
-          onEdit={() => onMovieEditClicked(movieItem)}
-          onDelete={() => onMovieEditDeleted(movieItem.id)}
-        >
-          {movieItem.title}
-        </Movie>
+  const NUM_OF_CARD_PER_ROW = 3;
+  const cardDesks: Array<JSX.Element[]> = [[]];
+  movieItems.forEach((movieItem: MovieDto) => {
+    if (cardDesks[cardDesks.length - 1].length >= NUM_OF_CARD_PER_ROW) {
+      cardDesks.push([]);
+    }
+    cardDesks[cardDesks.length - 1].push(
+      <Movie
+        key={movieItem.id}
+        data={movieItem}
+        onEdit={() => onMovieEditClicked(movieItem)}
+        onDelete={() => onMovieEditDeleted(movieItem.id)}
+      >
+        {movieItem.title}
+      </Movie>
     );
   });
 
@@ -76,16 +82,21 @@ const Movies = (props: React.PropsWithChildren<MoviesProps> & RouteComponentProp
   );
 
   const modal = modalData.visible ? (
-    <MovieForm show={modalData.visible} onClose={handleModalClose} data={modalData.movie}></MovieForm>
+    <MovieForm show={modalData.visible} isEditing={modalData.isEditing} onClose={handleModalClose} data={modalData.movie}></MovieForm>
   ) : null;
 
   return (
     <>
       <Button variant="primary" size="lg" className='mb-3' onClick={onMovieAddClicked}>Add Movie</Button>
-      <CardDeck>
-        {movieListItems.length > 0 ? movieListItems : noMoviesPlaceHolder}
-      </CardDeck>
-
+      {
+        movieItems.length > 0 ?  cardDesks.map((cards, index) => {
+          return (
+            <CardDeck key={index} className="mt-3">
+              {cards}
+            </CardDeck>
+          );
+        }) : noMoviesPlaceHolder
+      }
       {modal}
     </>
   );

@@ -17,7 +17,7 @@ export interface MovieProps {
 
 const Movie = (props: React.PropsWithChildren<MovieProps>) => {
   const actors = (props.data.actors || []).map((actor: ActorDto) => (
-    <Badge key={actor.id} variant="info">{actor.name}</Badge>
+    <Badge key={actor.id} variant="info" className="mr-2">{actor.name}</Badge>
   ));
 
   const releaseDate = (

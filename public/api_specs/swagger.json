@@ -363,15 +363,33 @@
           }
         }
       },
+      "ArrayOfInt": {
+        "type": "array",
+        "items": {
+          "type": "integer"
+        },
+        "example": "[1, 2, 3, 4]"
+      },
       "MovieRequestPostBody": {
         "type": "object",
         "properties": {
           "title": {
             "type": "string",
-            "format": "string"
+            "format": "string",
+            "example": "My Favorite Movie"
           },
           "release_date": {
-            "type": "number"
+            "type": "number",
+            "description": "Seconds since epoch. For example: '27-04-2020, 11:55:55' equals 1587968755 seconds from epoch",
+            "example": 1587968755
+          },
+          "actors": {
+            "required": false,
+            "type":"array",
+            "items": {
+              "type":"integer"
+            },
+            "example": [1, 2, 3, 4]
           }
         }
       },
@@ -385,8 +403,10 @@
             "type": "string",
             "format": "string"
           },
-          "releasedate": {
-            "type": "number"
+          "release_date": {
+            "type": "number",
+            "description": "Seconds since epoch. For example: '27-04-2020, 11:55:55' equals 1587968755 seconds from epoch",
+            "example": 1587968755
           },
           "actors": {
             "type": "array",
@@ -417,10 +437,18 @@
             "type": "number"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "example": "Superstar Actor"
+          },
+          "age": {
+            "type": "number",
+            "required": false,
+            "description": "Age. 0 < age <= 100 ",
+            "example": 10
           },
           "gender": {
-            "$ref": "#/components/schemas/Gender"
+            "$ref": "#/components/schemas/Gender",
+            "example": "M"
           }
         }
       },
@@ -442,13 +470,28 @@
         "type": "object",
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "required": true,
+            "example": "Superstar Actor"
           },
           "age": {
-            "type": "number"
+            "type": "number",
+            "required": false,
+            "description": "Age. 0 < age <= 100 ",
+            "example": 10
           },
           "gender": {
-            "$ref": "#/components/schemas/Gender"
+            "$ref": "#/components/schemas/Gender",
+            "description": "Gender identifier",
+            "example": "F"
+          },
+          "movies": {
+            "required": false,
+            "type":"array",
+            "items": {
+              "type":"integer"
+            },
+            "example": [1, 2, 3, 4]
           }
         }
       },
