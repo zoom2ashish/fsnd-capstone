@@ -4,7 +4,7 @@ from datetime import datetime
 from os import environ as env
 
 database_name = env.get('DATABASE_NAME', "casting_agency")
-database_path = env.get('DATABASE_URI', "postgres://{}@{}/{}?gssencmode=disable".format(
+database_path = env.get('DATABASE_URL', "postgres://{}@{}/{}?gssencmode=disable".format(
     'postgres', 'localhost:5432', database_name))
 
 db = SQLAlchemy()
