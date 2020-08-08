@@ -16,7 +16,6 @@ backend/routes/__pycache__
 /coverage
 
 # production
-/build
 
 # misc
 .DS_Store

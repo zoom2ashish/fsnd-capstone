@@ -1,0 +1,525 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "Movies",
+    "version": "1.0.0",
+    "title": "Casting Agency - FSND Capstone App",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Movie Request",
+      "description": "API for requesting and return movie information"
+    },
+    {
+      "name": "Actor Request",
+      "description": "PI for requesting and return actor information"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/api/movies": {
+      "get": {
+        "tags": [
+          "Movie Request"
+        ],
+        "summary": "Returns MovieList",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/MovieList"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Movie Request"
+        ],
+        "summary": "Add Movie",
+        "requestBody": {
+          "description": "Movie Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MovieRequestPostBody"
+              }
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/Movie"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
+    },
+    "/api/movies/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "ID of the cat that we want to match",
+          "type": "string"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Movie Request"
+        ],
+        "summary": "Get Movie with given ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Movie id",
+            "schema": {
+              "$ref": "#/components/schemas/id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/Movie"
+            }
+          },
+          "400": {
+            "description": "Failed. Misunderstood Request."
+          },
+          "404": {
+            "description": "Failed. Book request not found."
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Movie Request"
+        ],
+        "summary": "Update Movie Details",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Movie id",
+            "schema": {
+              "$ref": "#/components/schemas/id"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Movie Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MovieRequestPostBody"
+              }
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/Movie"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Movie Request by ID",
+        "tags": [
+          "Movie Request"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Movie Id",
+            "schema": {
+              "$ref": "#/components/schemas/id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/id"
+            }
+          },
+          "400": {
+            "description": "Failed. Misunderstood Request."
+          },
+          "404": {
+            "description": "Failed. Book Request not found."
+          }
+        }
+      }
+    },
+    "/api/actors": {
+      "get": {
+        "tags": [
+          "Actor Request"
+        ],
+        "summary": "Returns ActorList",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/ActorList"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Actor Request"
+        ],
+        "summary": "Add Actor",
+        "requestBody": {
+          "description": "Actor Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActorRequestPostBody"
+              }
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/Actor"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
+    },
+    "/api/actors/{id}": {
+      "get": {
+        "tags": [
+          "Actor Request"
+        ],
+        "summary": "Get Actor with given ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Actor id",
+            "schema": {
+              "$ref": "#/components/schemas/id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/Actor"
+            }
+          },
+          "400": {
+            "description": "Failed. Misunderstood Request."
+          },
+          "404": {
+            "description": "Failed. Book request not found."
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Actor Request"
+        ],
+        "summary": "Update Actor Details",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Actor id",
+            "schema": {
+              "$ref": "#/components/schemas/id"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Actor Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActorRequestPostBody"
+              }
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/Actor"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Actor Request by ID",
+        "tags": [
+          "Actor Request"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Actor Id",
+            "schema": {
+              "$ref": "#/components/schemas/id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/id"
+            }
+          },
+          "400": {
+            "description": "Failed. Misunderstood Request."
+          },
+          "404": {
+            "description": "Failed. Book Request not found."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Enter JWT Bearer token **_only_**"
+      }
+    },
+    "schemas": {
+      "id": {
+        "properties": {
+          "id": {
+            "type": "number"
+          }
+        }
+      },
+      "ArrayOfInt": {
+        "type": "array",
+        "items": {
+          "type": "integer"
+        },
+        "example": "[1, 2, 3, 4]"
+      },
+      "MovieRequestPostBody": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "format": "string",
+            "example": "My Favorite Movie"
+          },
+          "release_date": {
+            "type": "number",
+            "description": "Seconds since epoch. For example: '27-04-2020, 11:55:55' equals 1587968755 seconds from epoch",
+            "example": 1587968755
+          },
+          "actors": {
+            "required": false,
+            "type":"array",
+            "items": {
+              "type":"integer"
+            },
+            "example": [1, 2, 3, 4]
+          }
+        }
+      },
+      "Movie": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "title": {
+            "type": "string",
+            "format": "string"
+          },
+          "release_date": {
+            "type": "number",
+            "description": "Seconds since epoch. For example: '27-04-2020, 11:55:55' equals 1587968755 seconds from epoch",
+            "example": 1587968755
+          },
+          "actors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Actor"
+            }
+          }
+        }
+      },
+      "MovieList": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "type": "number"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Movie"
+            }
+          }
+        }
+      },
+      "Actor": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string",
+            "example": "Superstar Actor"
+          },
+          "age": {
+            "type": "number",
+            "required": false,
+            "description": "Age. 0 < age <= 100 ",
+            "example": 10
+          },
+          "gender": {
+            "$ref": "#/components/schemas/Gender",
+            "example": "M"
+          }
+        }
+      },
+      "ActorList": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "type": "number"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Actor"
+            }
+          }
+        }
+      },
+      "ActorRequestPostBody": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "required": true,
+            "example": "Superstar Actor"
+          },
+          "age": {
+            "type": "number",
+            "required": false,
+            "description": "Age. 0 < age <= 100 ",
+            "example": 10
+          },
+          "gender": {
+            "$ref": "#/components/schemas/Gender",
+            "description": "Gender identifier",
+            "example": "F"
+          },
+          "movies": {
+            "required": false,
+            "type":"array",
+            "items": {
+              "type":"integer"
+            },
+            "example": [1, 2, 3, 4]
+          }
+        }
+      },
+      "Gender": {
+        "type": "string",
+        "enum": [
+          "M", "F", "U"
+        ]
+      },
+      "ApiError": {
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "error": {
+            "type": "number"
+          },
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
