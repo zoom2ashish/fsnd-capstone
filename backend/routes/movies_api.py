@@ -23,7 +23,8 @@ def get_movies():
       "results": movies,
       "count": len(movies)
     })
-  except Exception:
+  except Exception as e:
+    print(e)
     abort(400)
 
 @API.route('/<int:id>', methods=['GET'])
