@@ -8,6 +8,9 @@ import Select, { ValueType } from 'react-select';
 import DatePicker from 'react-datepicker';
 import { ActorListResultDto, MovieDto, MoviePostRequestDto } from '../../dto';
 import "react-datepicker/dist/react-datepicker.css";
+import Alert from 'react-bootstrap/Alert';
+import { createMovie, updateMovie } from '../../services/axios-movies';
+import { fetchActors } from '../../services/axios-actors';
 
 export interface MovieFormProps {
   show: boolean;
@@ -42,9 +45,7 @@ const MovieForm = (
   );
 
   useEffect(() => {
-    fetch("/api/actors")
-      .then((response) => response.json())
-      .then((response: ActorListResultDto) => {
+    fetchActors().then((response: ActorListResultDto) => {
         const actorOptions: OptionType[] = response.results.map((actor) => ({
           value: actor.id,
           label: actor.name,
@@ -61,20 +62,30 @@ const MovieForm = (
   };
 
   const onSubmit = () => {
+    setError('');
     const updatedMovie: MoviePostRequestDto = {
       title: title,
       release_date: Math.round(releaseDate.getTime() / 1000), // Time in seconds
       actors: (selectedActors || []).map((actor: OptionType) => actor.value),
     };
-    const url = props.isEditing ? `/api/movies/${movie?.id}` : '/api/movies';
-    fetch(url, {
-      method: props.isEditing ? 'PATCH' : 'POST',
-      body: JSON.stringify(updatedMovie)
-    }).then(() => {
-      props.onClose();
-    }).catch((e: Error) => {
-      setError('Failed to create movie.' + e.message);
-    });
+    const id = movie?.id || 0;
+    if (props.isEditing) {
+      updateMovie(id, updatedMovie)
+        .then(() => {
+          props.onClose();
+        })
+        .catch((e) =>{
+          setError('Failed to update movie.' + e.message);
+        });
+    } else {
+      createMovie(updatedMovie)
+        .then(() => {
+          props.onClose();
+        })
+        .catch((e) =>{
+          setError('Failed to update movie.' + e.message);
+        });
+    }
   };
 
   return (
@@ -84,6 +95,7 @@ const MovieForm = (
           <Modal.Title>{props.isEditing ? 'Edit Movie' : 'Add Movie'}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          { error ? <Alert variant={'danger'}>{error}</Alert> : null }
           <Form>
             <Form.Group controlId="movieForm.title">
               <Form.Label>Movie Title</Form.Label>

@@ -11,6 +11,8 @@ import Select, { ValueType } from 'react-select';
 import { ActorDto, ActorListResultDto, ActorPostRequestDto, Gender, MovieDto, MovieListResultDto } from '../../dto';
 import { getGenderDisplayString } from '../../utils/generic-utils';
 import { fetchMovies } from '../../services/axios-movies';
+import Alert from 'react-bootstrap/Alert';
+import { createActor, updateActor } from '../../services/axios-actors';
 
 export interface ActorFormProps {
   show: boolean;
@@ -64,15 +66,25 @@ const ActorForm = (
       gender: gender,
       movies: (selectedMovies || []).map((movie: OptionType) => movie.value),
     };
-    const url = props.isEditing ? `/api/actors/${actor?.id}` : '/api/actors';
-    fetch(url, {
-      method: props.isEditing ? 'PATCH' : 'POST',
-      body: JSON.stringify(updatedActor)
-    }).then(() => {
-      props.onClose();
-    }).catch((e: Error) => {
-      setError('Failed to create movie.' + e.message);
-    });
+
+    const id = actor?.id || 0;
+    if (props.isEditing) {
+      updateActor(id, updatedActor)
+        .then(() => {
+          props.onClose();
+        })
+        .catch((e) =>{
+          setError('Failed to update actor.' + e.message);
+        });
+    } else {
+      createActor(updatedActor)
+        .then(() => {
+          props.onClose();
+        })
+        .catch((e) =>{
+          setError('Failed to update actor.' + e.message);
+        });
+    }
   };
 
   return (
@@ -82,6 +94,7 @@ const ActorForm = (
           <Modal.Title>{props.isEditing ? 'Edit Actor' : 'Add Actor'}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          { error ? <Alert variant={'danger'}>{error}</Alert> : null }
           <Form>
             <Form.Group controlId="actorForm.name">
               <Form.Label>Actor Name</Form.Label>
