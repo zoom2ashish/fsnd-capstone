@@ -1,36 +1,41 @@
 import React from 'react';
+import Badge from 'react-bootstrap/Badge';
 import Card from 'react-bootstrap/Card';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
-import Badge from "react-bootstrap/Badge";
+
+import { ActorDto, MovieDto, Gender } from '../../dto';
 import classes from './Actor.module.css';
-import { ActorDto } from '../../dto';
+import { getGenderDisplayString } from '../../utils/generic-utils';
 
 export interface ActorProps {
   data: ActorDto;
+  onEdit: (id: number) => void;
+  onDelete: (id: number) => void;
 }
 
 const Actor = (props: React.PropsWithChildren<ActorProps>) => {
+  const movies = (props.data.movies || []).map((movie: MovieDto) => (
+    <Badge key={movie.id} variant="info" className="mr-2">{movie.title}</Badge>
+  ));
 
-  const cssClasses = [ classes.Actor, 'mb-4' ].join(' ');
   return (
-<Card className={cssClasses}>
-      <Card.Body>
-        <Row>
-          <Col sm={8}>
-            <h4>{props.data?.name}</h4>
-            <h6>Age: {props.data?.age} yrs</h6>
-          </Col>
-          <Col sm={4} className="justify-content-end">
-            <div className={classes.ActionButtons}>
-              <Button variant="primary" className="ml-1">Edit</Button>
-              <Button variant="danger" className="ml-1">Delete</Button>
-            </div>
-          </Col>
-        </Row>
-      </Card.Body>
-    </Card>
+      <Card className={classes.Actor + ' shadow bg-white rounded '}>
+        <Card.Body>
+          <Card.Title>{props.data?.name}</Card.Title>
+          <Card.Text>
+            <span className="mr-2">Age</span><span>{props.data.age}</span>
+          </Card.Text>
+          <Card.Text>
+            <span className="mr-2">Gender</span><span>{getGenderDisplayString(props.data.gender)}</span>
+          </Card.Text>
+          <Card.Text>
+            {movies}
+          </Card.Text>
+        </Card.Body>
+        <Card.Footer>
+          <Card.Link href="#" onClick={() => props.onEdit(props.data.id)}>Edit</Card.Link>
+          <Card.Link href="#" onClick={() => props.onDelete(props.data.id)}>Delete</Card.Link>
+        </Card.Footer>
+      </Card>
   );
 };
 

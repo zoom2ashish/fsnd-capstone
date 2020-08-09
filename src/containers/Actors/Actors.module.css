@@ -1,0 +1,13 @@
+.Actor_ListItem_Active::after{
+  content: '';
+  position: absolute;
+  left: 100%;
+  top: 5%;
+  width: 0;
+  height: 90%;
+  border-top: 20px solid transparent;
+  border-bottom: 20px solid transparent;
+  border-left: 20px solid #007bff;
+  clear: both;
+  opacity: 0.5;
+}

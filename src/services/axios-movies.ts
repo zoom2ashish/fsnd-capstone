@@ -9,3 +9,9 @@ export function fetchMovies(): Promise<MovieListResultDto> {
       return response.data
     });
 }
+
+
+export function deleteMovie(id: number): Promise<any> {
+  return axios.delete(MOVIES_BASE_URL + `/${id}`)
+    .then(response => response);
+}

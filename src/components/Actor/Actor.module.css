@@ -1,9 +1,10 @@
-.Movie {
+.Actor {
+  max-width: 20rem;
+  transition: all .4s ease-out;
 }
 
-.Release_Date {
-  font-size: 14px;
-  color: #777777;
+.Actor:hover {
+  transform: scale(1.1);
 }
 
 .ActionButtons {

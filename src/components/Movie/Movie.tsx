@@ -27,7 +27,7 @@ const Movie = (props: React.PropsWithChildren<MovieProps>) => {
   );
 
   return (
-      <Card className={classes.Movie}>
+      <Card className={classes.Movie + ' shadow bg-white rounded '}>
         <Card.Body>
           <Card.Title>{props.data?.title}</Card.Title>
           <Card.Subtitle className="mb-2 text-muted">

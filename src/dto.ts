@@ -43,3 +43,21 @@ export interface MovieListResultDto {
   count: number;
   results: MovieDto[]
 }
+
+export interface MoviesProps{
+}
+
+export interface ActorsProps{
+}
+
+export interface ModalData<T> {
+  visible: boolean;
+  isEditing: boolean;
+  data?: T;
+}
+
+export interface AlertData {
+  visible: boolean;
+  alertType?:   'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info' | 'light' | 'dark';
+  message?: string;
+}

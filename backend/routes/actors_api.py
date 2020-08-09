@@ -1,6 +1,6 @@
 from flask import jsonify, abort, request, Blueprint
 from enum import Enum
-from backend.models import Actor
+from backend.models import Actor, Movie
 import json
 
 class Gender(Enum):
@@ -18,7 +18,7 @@ def get_blueprint():
 def get_actors():
   try:
     actors = [
-      actor.serialize() for actor in Actor.query.all()
+      actor.serialize_with_movies() for actor in Actor.query.all()
     ]
 
     return jsonify({
@@ -47,6 +47,7 @@ def create_actor():
     name = data['name']
     age = data['age']
     gender = Gender(data['gender'])
+    movie_ids = data.get('movies', [])
 
     if (name is None) or (len(name.strip()) == 0):
       abort(400, 'Actor name is not specified.')
@@ -57,7 +58,11 @@ def create_actor():
     if (isinstance(gender, Gender) is False):
       abort(400, 'Invalid gender')
 
+    movies = Movie.query.filter(Movie.id.in_(movie_ids)).all()
+
     actor = Actor(name=name, age=age, gender=gender.value)
+    actor.movies = movies
+
     actor.insert()
 
     return jsonify(actor.serialize())
@@ -78,10 +83,14 @@ def edit_actor(id):
     name = data.get('name', actor.name)
     age = data.get('age', actor.age)
     gender = Gender(data.get('gender', actor.gender))
+    movie_ids = data.get('movies', [])
+
+    movies = Movie.query.filter(Movie.id.in_(movie_ids)).all()
 
     actor.name = name
     actor.age = age
     actor.gender = gender.value
+    actor.movies = movies
 
     actor.update()
 
