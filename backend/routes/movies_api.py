@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from flask import jsonify, abort, request, Blueprint
 from backend.models import Movie, Actor
 from backend.utils.datetime_utils import isValidDateTimeInSeconds
+from backend.auth.auth import requires_auth
 import json
 import math
 
@@ -13,7 +14,8 @@ def get_blueprint():
   return API
 
 @API.route('', methods=['GET'])
-def get_movies():
+@requires_auth('read:movies')
+def get_movies(payload):
   try:
     allMovies = Movie.query.all()
     movies = [
@@ -28,7 +30,8 @@ def get_movies():
     abort(400)
 
 @API.route('/<int:id>', methods=['GET'])
-def get_movie(id):
+@requires_auth('read:movies')
+def get_movie(payload, id):
   try:
     movie = Movie.query.filter(Movie.id==id).one_or_none()
 
@@ -40,7 +43,8 @@ def get_movie(id):
     abort(400, e.description)
 
 @API.route('', methods=['POST'])
-def create_movie():
+@requires_auth('create:movies')
+def create_movie(payload):
   try:
     data = json.loads(request.data)
     name = data.get('title', None)
@@ -67,7 +71,8 @@ def create_movie():
     abort(500, 'Failed to insert')
 
 @API.route('/<int:id>', methods=['PATCH'])
-def edit_movie(id):
+@requires_auth('update:movies')
+def edit_movie(payload, id):
   try:
     movie = Movie.query.filter(Movie.id==id).first()
     if movie is None:
@@ -97,7 +102,8 @@ def edit_movie(id):
     abort(500, 'Failed to insert')
 
 @API.route('/<int:id>', methods=['DELETE'])
-def delete_movie(id):
+@requires_auth('delete:movies')
+def delete_movie(payload, id):
   try:
     movie = Movie.query.filter(Movie.id==id).first()
     if movie is None:

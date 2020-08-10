@@ -95,13 +95,13 @@ def verify_decode_jwt(token):
                                  audience=API_AUDIENCE,
                                  issuer=f"https://{AUTH0_DOMAIN}/")
             return payload
-        except jwt.ExpiredSignatureError:
+        except jwt.ExpiredSignatureError as e:
             raise AuthError({
                 'code': 'token_expired',
                 'description': 'Token expired.'
             }, 401)
 
-        except jwt.JWTClaimsError:
+        except jwt.JWTClaimsError as e:
             raise AuthError({
                 'code': 'invalid_claims',
                 'description':

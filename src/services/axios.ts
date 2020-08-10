@@ -9,10 +9,8 @@ const instance = axios.create({
 instance.interceptors.response.use(
   response => response,
   error => {
-    if (error.response.status === 401) {
-    } else {
+    console.log(error);
       throw error;
-    }
   });
 
 export default instance;

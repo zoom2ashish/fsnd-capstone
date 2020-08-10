@@ -1,0 +1,7 @@
+.HomeImageContainer {
+  background-image: linear-gradient(to right, rgba(255,255,255, 0.25), rgba(0,0,255, 0.25));
+}
+
+.HomeImage {
+  width: 100%;
+}

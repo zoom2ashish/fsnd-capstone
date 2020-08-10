@@ -7,6 +7,9 @@ export function fetchMovies(): Promise<MovieListResultDto> {
   return axios.get(MOVIES_BASE_URL)
     .then(response => {
       return response.data
+    }).catch(error => {
+      console.log(error);
+      throw error;
     });
 }
 

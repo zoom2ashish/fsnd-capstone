@@ -52,6 +52,12 @@ const Movies = (props: React.PropsWithChildren<MoviesProps> & RouteComponentProp
           message: `Movie '${movieToDelete.title}' deleted successfully`,
           alertType: 'success'
         });
+      }).catch((error) => {
+        setAlertData({
+          visible: true,
+          alertType: 'danger',
+          message: error.message
+        });
       });
   };
 

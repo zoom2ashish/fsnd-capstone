@@ -55,13 +55,19 @@ def callback_handling():
     userinfo = resp.json()
 
     # Store the user information in flask session.
+    session['jwt']=oauthHelper.auth0.token.get('id_token')
     session['jwt_payload'] = userinfo
     session['profile'] = {
         'user_id': userinfo['sub'],
         'name': userinfo['name'],
         'picture': userinfo['picture']
     }
-    return redirect('/')
+    return jsonify({
+      "jwt": oauthHelper.auth0.token.get('id_token'),
+      "userinfo": session["jwt_payload"],
+      "profile": session['profile']
+    })
+    # return redirect('/')
 
 @API.route('/logout')
 def logout():
