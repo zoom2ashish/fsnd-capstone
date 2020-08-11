@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link, withRouter, RouteComponentProps } from 'react-router-dom';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
@@ -8,8 +8,12 @@ import classes from './Layout.module.css';
 import { useAuth0, IdToken } from '@auth0/auth0-react';
 import Button from 'react-bootstrap/Button';
 
-const Layout = (props: React.Props<any>) => {
+const Layout = (props: React.PropsWithChildren<RouteComponentProps>) => {
   const { user, isAuthenticated, loginWithRedirect, logout } = useAuth0();
+
+  const userProfileClicked = () => {
+    props.history.push('/userprofile');
+  }
 
   const navLinks = isAuthenticated ? (
   <>
@@ -21,7 +25,7 @@ const Layout = (props: React.Props<any>) => {
   const signInControls = isAuthenticated ?
     (<>
       <NavDropdown title={user ? user.name : 'Unknown' } id="collasible-nav-dropdown">
-        <NavDropdown.Item href="/userprofile">View Profile</NavDropdown.Item>
+        <NavDropdown.Item onClick={() => userProfileClicked()}>View Profile</NavDropdown.Item>
         <NavDropdown.Item onClick={() => logout({returnTo: window.location.origin, client_id: 'IrrwsvDC9WQZ404zksQ0ALJsbKGZwX4m' })}>Logout</NavDropdown.Item>
       </NavDropdown>
     </>) : <Button onClick={() => loginWithRedirect()} variant="link">Log In</Button>
@@ -47,4 +51,4 @@ const Layout = (props: React.Props<any>) => {
   );
 };
 
-export default Layout;
+export default withRouter(Layout);
