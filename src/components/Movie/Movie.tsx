@@ -8,6 +8,7 @@ import { MovieDto, ActorDto } from "../../dto";
 import classes from "./Movie.module.css";
 import { Link, NavLink } from 'react-router-dom';
 import { getDate } from '../../utils/dateutils';
+import Can from '../../hoc/Can';
 
 export interface MovieProps {
   data: MovieDto;
@@ -38,8 +39,12 @@ const Movie = (props: React.PropsWithChildren<MovieProps>) => {
           </Card.Text>
         </Card.Body>
         <Card.Footer>
-          <Card.Link href="#" onClick={() => props.onEdit(props.data.id)}>Edit</Card.Link>
-          <Card.Link href="#" onClick={() => props.onDelete(props.data.id)}>Delete</Card.Link>
+          <Can permissions={['update:movies']}>
+            <Card.Link href="#" onClick={() => props.onEdit(props.data.id)}>Edit</Card.Link>
+          </Can>
+          <Can permissions={['delete:movies']}>
+            <Card.Link href="#" onClick={() => props.onDelete(props.data.id)}>Delete</Card.Link>
+          </Can>
         </Card.Footer>
       </Card>
   );

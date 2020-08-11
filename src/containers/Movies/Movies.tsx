@@ -10,6 +10,7 @@ import Movie from '../../components/Movie/Movie';
 import { MovieDto, MoviesProps, AlertData, ModalData } from '../../dto';
 import MovieForm from '../../components/MovieForm/MovieForm';
 import * as axiosMovies from '../../services/axios-movies';
+import Can from '../../hoc/Can';
 
 const initialAlertState: AlertData = {visible: false };
 
@@ -98,9 +99,11 @@ const Movies = (props: React.PropsWithChildren<MoviesProps> & RouteComponentProp
   return (
     <>
       <Row>
-        <Col md="auto">
-          <Button variant="primary" size="lg" className='mb-3' onClick={onMovieAddClicked}>Add Movie</Button>
-        </Col>
+        <Can permissions={["create:movies"]}>
+          <Col md="auto">
+            <Button variant="primary" size="lg" className='mb-3' onClick={onMovieAddClicked}>Add Movie</Button>
+          </Col>
+        </Can>
         <Col>
           {alertData.visible ? <Alert key={1} variant={alertData.alertType || 'primary'}>{alertData.message}</Alert> : null }
         </Col>

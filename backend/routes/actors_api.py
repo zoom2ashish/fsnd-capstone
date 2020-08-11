@@ -1,6 +1,7 @@
 from flask import jsonify, abort, request, Blueprint
 from enum import Enum
 from backend.models import Actor, Movie
+from backend.auth.auth import requires_auth
 import json
 
 class Gender(Enum):
@@ -15,7 +16,8 @@ def get_blueprint():
   return API
 
 @API.route('', methods=['GET'])
-def get_actors():
+@requires_auth('read:actors')
+def get_actors(payload):
   try:
     actors = [
       actor.serialize_with_movies() for actor in Actor.query.all()
@@ -29,7 +31,8 @@ def get_actors():
     abort(400)
 
 @API.route('/<int:id>', methods=['GET'])
-def get_actor(id):
+@requires_auth('read:actors')
+def get_actor(payload, id):
   try:
     actor = Actor.query.filter(Actor.id==id).one_or_none()
 
@@ -41,7 +44,8 @@ def get_actor(id):
     abort(400)
 
 @API.route('', methods=['POST'])
-def create_actor():
+@requires_auth('create:actors')
+def create_actor(payload):
   try:
     data = json.loads(request.data)
     name = data['name']
@@ -73,7 +77,8 @@ def create_actor():
 
 
 @API.route('/<int:id>', methods=['PATCH'])
-def edit_actor(id):
+@requires_auth('update:actors')
+def edit_actor(payload, id):
   try:
     actor = Actor.query.filter(Actor.id == id).one_or_none()
     if (actor is None):
@@ -101,7 +106,8 @@ def edit_actor(id):
     abort(500, f'Failed to insert. {e.description}')
 
 @API.route('/<int:id>', methods=['DELETE'])
-def delete_actor(id):
+@requires_auth('delete:actors')
+def delete_actor(payload, id):
   try:
     actor = Actor.query.filter(Actor.id==id).first()
     if actor is None:
@@ -115,4 +121,4 @@ def delete_actor(id):
 
   except Exception as e:
     print(e)
-    abort(500, 'Failed to insert')
+    abort(500, 'Failed to delete record.')

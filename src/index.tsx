@@ -9,16 +9,16 @@ import { Auth0Provider } from "@auth0/auth0-react";
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter basename="/">
-      <Auth0Provider
-        domain="ashishp-dev.us.auth0.com"
-        clientId="IrrwsvDC9WQZ404zksQ0ALJsbKGZwX4m"
-        audience="casting-agency-api"
-        redirectUri={window.location.origin}
-      >
+    <Auth0Provider
+      domain="ashishp-dev.us.auth0.com"
+      clientId="IrrwsvDC9WQZ404zksQ0ALJsbKGZwX4m"
+      audience="casting-agency-api"
+      redirectUri={window.location.origin}
+    >
+      <BrowserRouter basename="/">
         <App />{" "}
-      </Auth0Provider>
-    </BrowserRouter>
+      </BrowserRouter>
+    </Auth0Provider>
   </React.StrictMode>,
   document.getElementById("root")
 );

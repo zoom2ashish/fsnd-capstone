@@ -5,7 +5,7 @@ import os
 from flask import Flask, jsonify, make_response, render_template, abort
 from flask_cors import CORS
 from flask_swagger_ui import get_swaggerui_blueprint
-from backend.routes import request_api, movies_api, actors_api, auth_api
+from backend.routes import movies_api, actors_api, auth_api
 from backend.models import Movie, setup_db
 from werkzeug import exceptions
 from backend.auth.auth import requires_auth, AuthError
@@ -26,7 +26,6 @@ def setup_swagger_ui(app):
     ### end swagger specific ###
 
 def setup_blueprints(app):
-    app.register_blueprint(request_api.get_blueprint())
     app.register_blueprint(movies_api.get_blueprint(), url_prefix="/api/movies")
     app.register_blueprint(actors_api.get_blueprint(), url_prefix="/api/actors")
     app.register_blueprint(auth_api.get_blueprint(), url_prefix="/api/auth")
@@ -37,7 +36,7 @@ def create_app(test_config=None):
     # Setup secret key
     app.secret_key = env.get('APP_SECRET_KEY')
 
-    CORS(app)
+    CORS(app, resources={r"/api/*": {"origins": "*"}})
     setup_db(app)
     setup_swagger_ui(app)
     auth_api.oauthHelper.setup_oauth(app)
@@ -46,16 +45,17 @@ def create_app(test_config=None):
 
 APP = create_app()
 
-@APP.route('/api/headers')
-@requires_auth()
-def headers():
-    print(payload)
-    return 'Access Granted'
 
 ''' Default UI Route '''
 @APP.route("/")
 def index():
     return render_template('index.html')
+
+@APP.after_request
+def after_request(response):
+  response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+  response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,PATCH,DELETE')
+  return response
 
 @APP.errorhandler(400)
 def handle_400_error(error):

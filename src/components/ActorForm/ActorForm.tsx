@@ -55,7 +55,6 @@ const ActorForm = (
   const handleMovieSelectionChange = (
     selectedOptions: ValueType<OptionType>
   ) => {
-    console.log("selectedOptions=", selectedOptions);
     setSelectedMovies(selectedOptions as OptionType[]);
   };
 

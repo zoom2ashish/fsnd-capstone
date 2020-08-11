@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Container from 'react-bootstrap/Container';
 import classes from './Layout.module.css';
-import { useAuth0 } from '@auth0/auth0-react';
+import { useAuth0, IdToken } from '@auth0/auth0-react';
 import Button from 'react-bootstrap/Button';
 
 const Layout = (props: React.Props<any>) => {
   const { user, isAuthenticated, loginWithRedirect, logout } = useAuth0();
+
   const navLinks = isAuthenticated ? (
   <>
     <NavLink to="/movies" className="nav-link" activeClassName={'active'}>Movies</NavLink>
@@ -18,8 +19,12 @@ const Layout = (props: React.Props<any>) => {
    ) : null;
 
   const signInControls = isAuthenticated ?
-    <Button onClick={() => logout({returnTo: window.location.origin, client_id: 'IrrwsvDC9WQZ404zksQ0ALJsbKGZwX4m' })} variant="link">Logout</Button> :
-    <Button onClick={() => loginWithRedirect()} variant="link">Log In</Button>
+    (<>
+      <NavDropdown title={user ? user.name : 'Unknown' } id="collasible-nav-dropdown">
+        <NavDropdown.Item href="/userprofile">View Profile</NavDropdown.Item>
+        <NavDropdown.Item onClick={() => logout({returnTo: window.location.origin, client_id: 'IrrwsvDC9WQZ404zksQ0ALJsbKGZwX4m' })}>Logout</NavDropdown.Item>
+      </NavDropdown>
+    </>) : <Button onClick={() => loginWithRedirect()} variant="link">Log In</Button>
 
   return (
     <Container>

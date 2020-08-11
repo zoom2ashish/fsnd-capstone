@@ -9,9 +9,10 @@ import Movies from './containers/Movies/Movies';
 import Home from './containers/Home/Home';
 import { useAuth0 } from '@auth0/auth0-react';
 import axios from './services/axios';
+import UserProfile from './containers/UserProfile/UserProfile';
 
 function App() {
-  const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
+  const { user, isAuthenticated, getAccessTokenSilently, getIdTokenClaims } = useAuth0();
   const [token, setToken] = useState<string>('');
   useEffect(() => {
 
@@ -29,6 +30,7 @@ function App() {
     <Switch>
       <Route path="/movies" component={Movies}></Route>
       <Route exact path="/actors" component={Actors}></Route>
+      <Route exact path="/userprofile" component={UserProfile}></Route>
       <Redirect to="/movies"></Redirect>
     </Switch>
     </>
