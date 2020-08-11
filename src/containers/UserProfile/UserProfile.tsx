@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { WithAuth0Props, withAuth0, IdToken } from '@auth0/auth0-react';
+import React from 'react';
+import { WithAuth0Props, withAuth0 } from '@auth0/auth0-react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 
-const UserProfile = (props: React.PropsWithRef<WithAuth0Props>) => {
+const UserProfile = (props: React.PropsWithRef<WithAuth0Props & RouteComponentProps>) => {
   const { isAuthenticated, user } = props.auth0;
 
   let userProfile = null;
@@ -34,4 +35,4 @@ const UserProfile = (props: React.PropsWithRef<WithAuth0Props>) => {
   );
 };
 
-export default withAuth0(UserProfile);
+export default withRouter(withAuth0(UserProfile));

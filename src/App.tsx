@@ -12,7 +12,7 @@ import axios from './services/axios';
 import UserProfile from './containers/UserProfile/UserProfile';
 
 function App() {
-  const { user, isAuthenticated, getAccessTokenSilently, getIdTokenClaims } = useAuth0();
+  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
   const [token, setToken] = useState<string>('');
   useEffect(() => {
 
@@ -23,12 +23,12 @@ function App() {
         setToken(token);
       }
     })();
-  }, [isAuthenticated])
+  }, [isAuthenticated, getAccessTokenSilently])
 
   const routes = isAuthenticated && token ? (
     <>
     <Switch>
-      <Route path="/movies" component={Movies}></Route>
+      <Route exact path="/movies" component={Movies}></Route>
       <Route exact path="/actors" component={Actors}></Route>
       <Route exact path="/userprofile" component={UserProfile}></Route>
       <Redirect to="/movies"></Redirect>
