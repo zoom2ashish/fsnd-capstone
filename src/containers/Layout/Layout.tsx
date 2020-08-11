@@ -31,7 +31,7 @@ const Layout = (props: React.PropsWithChildren<RouteComponentProps>) => {
     </>) : <Button onClick={() => loginWithRedirect()} variant="dark">Log In</Button>
 
   return (
-    <Container fluid>
+    <Container className={classes.Layout + ' ' + 'shadow'}>
       <Navbar bg="dark"  variant="dark">
         <Navbar.Brand href="#home">Casting Agency</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
