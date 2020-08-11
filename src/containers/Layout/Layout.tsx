@@ -28,10 +28,10 @@ const Layout = (props: React.PropsWithChildren<RouteComponentProps>) => {
         <NavDropdown.Item onClick={() => userProfileClicked()}>View Profile</NavDropdown.Item>
         <NavDropdown.Item onClick={() => logout({returnTo: window.location.origin, client_id: 'IrrwsvDC9WQZ404zksQ0ALJsbKGZwX4m' })}>Logout</NavDropdown.Item>
       </NavDropdown>
-    </>) : <Button onClick={() => loginWithRedirect()} variant="link">Log In</Button>
+    </>) : <Button onClick={() => loginWithRedirect()} variant="dark">Log In</Button>
 
   return (
-    <Container>
+    <Container fluid>
       <Navbar bg="dark"  variant="dark">
         <Navbar.Brand href="#home">Casting Agency</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />

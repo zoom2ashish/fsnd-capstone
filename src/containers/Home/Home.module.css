@@ -1,7 +1,92 @@
 .HomeImageContainer {
-  background-image: linear-gradient(to right, rgba(255,255,255, 0.25), rgba(0,0,255, 0.25));
+  position: relative;
+  background-image: linear-gradient(to right, rgba(255,255,255, 0.8), rgba(76, 76, 196, 0.747)), url(../../assets/images/home.jpg);
+  height: 85vh;
+  width: 100%;
+  background-size: cover;
+  background-position: top;
+  clip-path: polygon(0 0, 100% 0, 100% 75vh, 0 100%);
+  /*
+  background-image:
+  */
 }
 
 .HomeImage {
   width: 100%;
+}
+
+
+.headerTextContainer {
+  position: absolute;
+  top: 40%;
+  left: 10%;
+  transform: translateY(-50%);
+  text-align: center;
+}
+
+.HeadingPrimary {
+  color: #000000;
+  text-transform: uppercase;
+  backface-visibility: hidden;
+  margin-bottom: 60px;
+}
+
+.HeadingPrimaryMain {
+  display: block;
+  font-size: 60px;
+  font-weight: 400;
+  letter-spacing: 35px;
+  animation-name: moveInLeft;
+  animation-duration: 1s;
+  animation-timing-function: ease-out;
+  /*
+  animation-iteration-count: 3;
+  animation-timing-function: ease-out;
+  */
+}
+
+.HeadingPrimarySub {
+  display: block;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 17.4px;
+  animation: moveInRight 1s ease-out;
+}
+
+
+@keyframes moveInLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-100px);
+  }
+
+  80% {
+    transform: translateX(10px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes moveInRight {
+  0% {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+
+  80% {
+    transform: translateX(-10px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.LoginButton {
+  width: 200px;
+  height: 50px;
 }
