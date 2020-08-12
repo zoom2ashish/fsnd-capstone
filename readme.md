@@ -70,7 +70,7 @@ http://127.0.0.1/swagger/
 
 ## Heroku
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](
-    https://heroku.com/deploy?template=https://github.com/Sean-Bradley/Seans-Python3-Flask-Rest-Boilerplate)
+    https://heroku.com/deploy?template=https://github.com/zoom2ashish/fsnd-capstone)
 
 You can also test this api on heroku.
 
