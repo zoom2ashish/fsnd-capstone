@@ -1,13 +1,5 @@
 ## Casting Agency App using Python Flask and React
-
-### MIT License
-Rememeber, No guarantees, or even fit for a particular purpose.
-
-This project will be updated slowly as required, so stay tuned.
-
-If you have a suggestion, or you want to contribute some code, you are free to make a pull request.
-
-Your contributions will be visible since this project is public.
+This app is developed as part of capstone project for Udacity's FullStack Developer Nanodegree. It allows managing movies, actors and their association based on RBAC permissions assiged to logged in user.
 
 ### System Requirement
 - Node JS
@@ -84,3 +76,11 @@ You can also test this api on heroku.
 
 Live : https://ashishp-casting-agency.herokuapp.com/
 
+### MIT License
+Rememeber, No guarantees, or even fit for a particular purpose.
+
+This project will be updated slowly as required, so stay tuned.
+
+If you have a suggestion, or you want to contribute some code, you are free to make a pull request.
+
+Your contributions will be visible since this project is public.
