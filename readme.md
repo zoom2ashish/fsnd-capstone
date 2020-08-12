@@ -54,9 +54,7 @@ npm install
 npm run start
 ```
 
-## Swagger UI
-![swagger.png](swagger.png)
-
+## Swagger UI for API Documentation
 Hosted Locally
 http://127.0.0.1:5000/swagger/
 
@@ -64,23 +62,11 @@ http://127.0.0.1:5000/swagger/
 Hosted via Heroku
 https://ashishp-casting-agency.herokuapp.com/swagger
 
-###
-Hosted via Docker-compose and Nginx
-http://127.0.0.1/swagger/
-
 ## Heroku
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](
     https://heroku.com/deploy?template=https://github.com/zoom2ashish/fsnd-capstone)
 
 You can also test this api on heroku.
 
-Live : https://ashishp-casting-agency.herokuapp.com/
+Live : https://ashishp-casting-agency.herokuapp.com/swagger
 
-### MIT License
-Rememeber, No guarantees, or even fit for a particular purpose.
-
-This project will be updated slowly as required, so stay tuned.
-
-If you have a suggestion, or you want to contribute some code, you are free to make a pull request.
-
-Your contributions will be visible since this project is public.
