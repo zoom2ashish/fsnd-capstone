@@ -1,4 +1,4 @@
-## Seans Python3 Flask Rest Boilerplate
+## Casting Agency App using Python Flask and React
 
 ### MIT License
 Rememeber, No guarantees, or even fit for a particular purpose.
@@ -9,67 +9,58 @@ If you have a suggestion, or you want to contribute some code, you are free to m
 
 Your contributions will be visible since this project is public.
 
-### To Setup and Start
+### System Requirement
+- Node JS
+- Python 3
+- Postgres SQL
+- Auth0.com authentication
+
+### Authentication Platform
+Currently the [Auth0.com] is supported for authentication and RBAC authorization. Create
+auth0 account and setup Single-Page app with configuration to allow authentication from your deployed URL. Also, setup desired Users and Roles with following permissions:
+#### Permissions
+| Permission  | Description  |
+|---|---|
+| read:actors  | Allows reading actor(s) records |
+| create:actors | Allow creating actor's record |
+| update:actors | Allow editing actor's record |
+| delete:actors | Allow deleting actor's record |
+| read:movies   | Allow reading movie records |
+| create:movies | Allow creating actor's record |
+| update:movies | Allow updating actor's record |
+| delete:movies | Allow deleting actor's record |
+
+### Setup Environment Variables
+Required Enviroment variables is specified in .evn.template file
+
+```
+DATABASE_NAME=
+DATABASE_URL=postgres://postgres@localhost:5432/casting_agency?gssencmode=disable
+APP_SECRET_KEY=some-secret-key
+AUTH0_API_AUDIENCE=
+AUTH0_CLIENT_ID=
+AUTH0_CLIENT_SECRET=
+AUTH0_DOMAIN=
+AUTH0_CALLBACK_URL=http://localhost:5000/api/auth/callback
+```
+
+### Creating database
+First create database in Postgres SQL
 ```bash
-pip install -r requirements.txt 
+createdb casting_agency -U <username>
+python manage.py db upgrade
+```
+### To Setup and Start Backend
+```bash
+pip install -r requirements.txt
 python app.py
 ```
 
-### Get All Request Records
+### Start Frontend separately
 ```bash
-curl -X GET http://127.0.0.1:5000/request
+npm install
+npm run start
 ```
-
-### Get One Request Record
-```bash
-curl -X GET http://127.0.0.1:5000/request/04cfc704-acb2-40af-a8d3-4611fab54ada
-```
-
-### Add A New Record
-```bash
-curl -X POST http://127.0.0.1:5000/request -H 'Content-Type: application/json' -d '{"title":"Good & Bad Book", "email": "testuser3@test.com"}'
-```
-
-### Edit An Existing Record
-```bash
-curl -X PUT http://127.0.0.1:5000/request -H 'Content-Type: application/json' -d '{"title":"edited Good & Bad Book", "email": "testuser4@test.com"}'
-```
-
-### Delete A Record
-```bash
-curl -X DELETE http://127.0.0.1:5000/request/04cfc704-acb2-40af-a8d3-4611fab54ada
-```
-
-## Unit Test with Nose
-```bash
-nosetests --verbosity=2
-```
-
-### Test Output
-```bash
-$ nosetests --verbose --nocapture
-app_test.test_get_all_requests ... ok
-app_test.test_get_individual_request ... ok
-app_test.test_get_individual_request_404 ... ok
-app_test.test_add_new_record ... ok
-app_test.test_get_new_record ... ok
-app_test.test_edit_new_record_title ... ok
-app_test.test_edit_new_record_email ... ok
-app_test.test_add_new_record_bad_email_format ... ok
-app_test.test_add_new_record_bad_title_key ... ok
-app_test.test_add_new_record_no_email_key ... ok
-app_test.test_add_new_record_no_title_key ... ok
-app_test.test_add_new_record_unicode_title ... ok
-app_test.test_add_new_record_no_payload ... ok
-app_test.test_delete_new_record ... ok
-app_test.test_delete_new_record_404 ... ok
-
-------------------------------------------------------------------------------------
-Ran 15 tests in 15.285s
-
-OK
-```
-
 
 ## Swagger UI
 ![swagger.png](swagger.png)
@@ -79,16 +70,11 @@ http://127.0.0.1:5000/swagger/
 
 ###
 Hosted via Heroku
-https://seans-python3-flask-rest.herokuapp.com/swagger/
+https://ashishp-casting-agency.herokuapp.com/swagger
 
 ###
 Hosted via Docker-compose and Nginx
 http://127.0.0.1/swagger/
-
-### Video Tutorial on adding Swagger-UI to this Python Flask API 
-[![Video Tutorial on adding Swagger-UI to Python Flask API](https://img.youtube.com/vi/iZ2Tah3IxQc/0.jpg)](https://youtu.be/iZ2Tah3IxQc)
-
-
 
 ## Heroku
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](
@@ -96,14 +82,5 @@ http://127.0.0.1/swagger/
 
 You can also test this api on heroku.
 
-Live : https://seans-python3-flask-rest.herokuapp.com/request
-
-use the above curl commands replacing `http://127.0.0.1` with `https://seans-python3-flask-rest.herokuapp.com`
-
-### Video Tutorial Hosting this Python Flask Rest API on Heroku
-
-[![Video Tutorial Hosting this Python Flask Rest API on Heroku](https://img.youtube.com/vi/O_xEqtjh1io/0.jpg)](https://youtu.be/O_xEqtjh1io)
-
-
-
+Live : https://ashishp-casting-agency.herokuapp.com/
 
