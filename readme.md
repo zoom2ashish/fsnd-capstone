@@ -66,7 +66,5 @@ https://ashishp-casting-agency.herokuapp.com/swagger
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](
     https://heroku.com/deploy?template=https://github.com/zoom2ashish/fsnd-capstone)
 
-You can also test this api on heroku.
-
-Live : https://ashishp-casting-agency.herokuapp.com/swagger
+Live App: https://ashishp-casting-agency.herokuapp.com
 
