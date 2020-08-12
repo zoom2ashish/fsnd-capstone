@@ -1,13 +1,13 @@
-PERMISSIONS = {
-  # Actors Permission
-  ReadActors: 'read:actors',
-  CreateActors: 'create:actors',
-  UpdateActors: 'update:actors',
-  DeleteActors: 'delete:actors',
+"""Defines Permissions Constants assigned to user"""
 
-  # Movies permissions
-  ReadMovies: 'read:movies',
-  CreateMovies: 'create:movies',
-  UpdateMovies: 'update:movies',
-  DeleteMovies: 'delete:movies',
+PERMISSIONS = {
+    "ReadActors": 'read:actors',
+    "CreateActors": 'create:actors',
+    "UpdateActors": 'update:actors',
+    "DeleteActors": 'delete:actors',
+
+    "ReadMovies": 'read:movies',
+    "CreateMovies": 'create:movies',
+    "UpdateMovies": 'update:movies',
+    "DeleteMovies": 'delete:movies',
 }

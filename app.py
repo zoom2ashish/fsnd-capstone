@@ -2,39 +2,41 @@
 
 import argparse
 import os
-from flask import Flask, jsonify, make_response, render_template, abort
+from flask import Flask, jsonify, render_template
 from flask_cors import CORS
 from flask_swagger_ui import get_swaggerui_blueprint
 from backend.routes import movies_api, actors_api, auth_api
-from backend.models import Movie, setup_db
-from werkzeug import exceptions
-from backend.auth.auth import requires_auth, AuthError
-from os import environ as env
+from backend.models import setup_db
+from backend.auth.auth import AuthError
+
+SWAGGER_URL = '/swagger'
+API_URL = '/api_specs/swagger.json'
 
 def setup_swagger_ui(app):
+    ''' Setup Swagger UI '''
     ### swagger specific ###
-    SWAGGER_URL = '/swagger'
-    API_URL = '/api_specs/swagger.json'
-    SWAGGERUI_BLUEPRINT = get_swaggerui_blueprint(
+    swagger_ui_blueprint = get_swaggerui_blueprint(
         SWAGGER_URL,
         API_URL,
         config={
             'app_name': "Casting Agency FSND Capstone"
         }
     )
-    app.register_blueprint(SWAGGERUI_BLUEPRINT, url_prefix=SWAGGER_URL)
+    app.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)
     ### end swagger specific ###
 
 def setup_blueprints(app):
+    ''' Setup Blueprints '''
     app.register_blueprint(movies_api.get_blueprint(), url_prefix="/api/movies")
     app.register_blueprint(actors_api.get_blueprint(), url_prefix="/api/actors")
     app.register_blueprint(auth_api.get_blueprint(), url_prefix="/api/auth")
 
-def create_app(test_config=None):
+def create_app():
+    ''' Create Flask App '''
     app = Flask(__name__, static_folder="build", template_folder="build", static_url_path="/")
 
     # Setup secret key
-    app.secret_key = env.get('APP_SECRET_KEY')
+    app.secret_key = os.environ.get('APP_SECRET_KEY')
 
     CORS(app, resources={r"/api/*": {"origins": "*"}})
     setup_db(app)
@@ -46,16 +48,17 @@ def create_app(test_config=None):
 APP = create_app()
 
 
-''' Default UI Route '''
 @APP.route("/")
 def index():
+    ''' Default UI Route '''
     return render_template('index.html')
 
 @APP.after_request
 def after_request(response):
-  response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-  response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,PATCH,DELETE')
-  return response
+    ''' Adds CORS headers '''
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,PATCH,DELETE')
+    return response
 
 @APP.errorhandler(400)
 def handle_400_error(error):
@@ -88,7 +91,6 @@ def handle_404_error(error):
         "code": 'not_found',
         "message": error.description
     }), 404
-    #return make_response(jsonify({'error': 'Not found'}), 404)
 
 
 @APP.errorhandler(500)
@@ -103,7 +105,7 @@ def handle_500_error(error):
 
 @APP.errorhandler(AuthError)
 def handle_auth_error(ex):
-    error = jsonify(ex.error)
+    '''Return a 401 authentication error to client'''
     return jsonify({
         "success": False,
         "error": ex.status_code,
@@ -112,7 +114,6 @@ def handle_auth_error(ex):
     }), ex.status_code
 
 if __name__ == '__main__':
-
     PARSER = argparse.ArgumentParser(
         description="Casting Agency - FSND Capstone App")
 
