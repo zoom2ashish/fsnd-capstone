@@ -37,7 +37,7 @@ def get_movie(payload, id):
         movie = Movie.query.filter(Movie.id == id).one_or_none()
 
         if movie is None:
-            abort(400, 'Invalid movie id')
+            abort(404, 'No movie record found for specified id')
 
         return jsonify(movie.serialize_with_actors())
     except Exception as error:
@@ -81,7 +81,7 @@ def edit_movie(payload, id):
     try:
         movie = Movie.query.filter(Movie.id == id).first()
         if movie is None:
-            abort(400, 'Invalid movie id.')
+            abort(404, 'No record found for specified movie id')
 
         current_assigned_actors = [
             actor.id for actor in movie.performing_actors
@@ -113,10 +113,8 @@ def edit_movie(payload, id):
 def delete_movie(payload, id):
     try:
         movie = Movie.query.filter(Movie.id == id).first()
-        if movie is None:
-            abort(400, 'Invalid movie id.')
-
-        movie.delete()
+        if movie is not None:
+            movie.delete()
 
         return jsonify({
             "success": True

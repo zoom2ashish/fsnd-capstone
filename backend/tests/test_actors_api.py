@@ -230,6 +230,62 @@ class ActorsApiTestCase(BaseTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTrue(data["id"])
 
+    """ Verify DELETE /api/actors/<actor_id> endpoint """
+
+    def test_delete_actor_invalid_actor_id(self):
+        self.mock_actor.insert()
+        self.mock_movie.insert()
+
+        response = self.client.delete(
+            '/api/actors/99999', json={},
+            headers={'Authorization': f'Bearer {tokens.director_jwt_token}'}
+            )
+        data = json.loads(response.data)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(data['success'])
+
+    def test_delete_actor_valid_id(self):
+        self.mock_actor.insert()
+
+        response = self.client.delete(
+            f'/api/actors/{self.mock_actor.id}',
+            headers={'Authorization': f'Bearer {tokens.director_jwt_token}'}
+            )
+        data = json.loads(response.data)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(data["success"])
+
+    def test_delete_actor_rbac_check(self):
+        self.mock_actor.insert()
+        payload = {
+            "name": "Update Actor Name",
+            "age": 99
+        }
+
+        response = self.client.delete(
+            f'/api/actors/{self.mock_actor.id}', json=payload,
+            headers={'Authorization': f'Bearer {tokens.assistant_jwt_token}'}
+            )
+        data = json.loads(response.data)
+        self.assertEqual(response.status_code, 403)
+        self.assertFalse(data["success"])
+
+        response = self.client.delete(
+            f'/api/actors/{self.mock_actor.id}', json=payload,
+            headers={'Authorization': f'Bearer {tokens.director_jwt_token}'}
+            )
+        data = json.loads(response.data)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(data["success"])
+
+        response = self.client.delete(
+            f'/api/actors/{self.mock_actor.id}', json=payload,
+            headers={'Authorization': f'Bearer {tokens.producer_jwt_token}'}
+            )
+        data = json.loads(response.data)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(data["success"])
+
 
 if __name__ == "__main___":
     """ Run unittests """
