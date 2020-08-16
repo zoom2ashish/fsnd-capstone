@@ -3,6 +3,8 @@ from backend.models import Movie, Actor
 from backend.utils.datetime_utils import isValidDateTimeInSeconds
 from backend.auth.auth import requires_auth
 import json
+import sys
+
 
 API = Blueprint('movies_api', __name__)
 
@@ -23,9 +25,9 @@ def get_movies(payload):
             "results": movies,
             "count": len(movies)
         })
-    except Exception as e:
-        print(e)
-        abort(400)
+    except Exception as error:
+        print(sys.exc_info())
+        raise error
 
 
 @API.route('/<int:id>', methods=['GET'])
@@ -38,8 +40,9 @@ def get_movie(payload, id):
             abort(400, 'Invalid movie id')
 
         return jsonify(movie.serialize_with_actors())
-    except Exception as e:
-        abort(400, e.description)
+    except Exception as error:
+        print(sys.exc_info())
+        raise error
 
 
 @API.route('', methods=['POST'])
@@ -67,9 +70,9 @@ def create_movie(payload):
 
         return jsonify(movie.serialize_with_actors())
 
-    except Exception as e:
-        print(e)
-        abort(500, 'Failed to insert')
+    except Exception as error:
+        print(sys.exc_info())
+        raise error
 
 
 @API.route('/<int:id>', methods=['PATCH'])
@@ -100,9 +103,9 @@ def edit_movie(payload, id):
 
         return jsonify(movie.serialize_with_actors())
 
-    except Exception as e:
-        print(e)
-        abort(500, 'Failed to insert')
+    except Exception as error:
+        print(sys.exc_info())
+        raise error
 
 
 @API.route('/<int:id>', methods=['DELETE'])
@@ -119,6 +122,6 @@ def delete_movie(payload, id):
             "success": True
         })
 
-    except Exception as e:
-        print(e)
-        abort(500, 'Failed to insert')
+    except Exception as error:
+        print(sys.exc_info())
+        raise error

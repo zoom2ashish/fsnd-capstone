@@ -123,8 +123,10 @@ def verify_decode_jwt(token):
             'description': 'Failed to decode provide token'
         }, 401)
 
+
 def requires_auth(permission=''):
-    """Validates JWT token from authorization header and also check for permissions"""
+    """Validates JWT token from authorization header and also check for
+       permissions"""
     def requires_auth_decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):

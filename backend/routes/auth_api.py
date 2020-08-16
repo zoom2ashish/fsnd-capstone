@@ -1,6 +1,7 @@
 from flask import jsonify, Blueprint, url_for, redirect, session
 from os import environ as env
 from authlib.integrations.flask_client import OAuth
+from authlib.oauth2.rfc6749 import grants
 from six.moves.urllib.parse import urlencode
 
 AUTH0_CALLBACK_URL = env.get('AUTH0_CALLBACK_URL')
@@ -24,7 +25,6 @@ class OAuthHelper:
 
     def setup_oauth(self, app):
         oauth = OAuth(app)
-        AUTH0_DOMAIN = env.get('AUTH0_DOMAIN')
         self.auth0 = oauth.register(
             'auth0',
             client_id=AUTH0_CLIENT_ID,
@@ -32,9 +32,11 @@ class OAuthHelper:
             api_base_url='https://{}'.format(AUTH0_DOMAIN),
             access_token_url='https://{}/oauth/token'.format(AUTH0_DOMAIN),
             authorize_url='https://{}/authorize'.format(AUTH0_DOMAIN),
+            jwks_uri="https://{}/.well-known/jwks.json".format(AUTH0_DOMAIN),
             client_kwargs={
                 'scope': 'openid profile email',
             },
+            grant_type=grants.ClientCredentialsGrant
         )
 
 
@@ -69,7 +71,7 @@ def callback_handling():
         'picture': userinfo['picture']
     }
     return jsonify({
-        "jwt": oauthHelper.auth0.token.get('id_token'),
+        "jwt": session['jwt'],
         "userinfo": session["jwt_payload"],
         "profile": session['profile']
     })

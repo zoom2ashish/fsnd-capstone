@@ -3,6 +3,7 @@ from enum import Enum
 from backend.models import Actor, Movie
 from backend.auth.auth import requires_auth
 import json
+import sys
 
 
 class Gender(Enum):
@@ -31,9 +32,9 @@ def get_actors(payload):
             "results": actors,
             "count": len(actors)
         })
-    except Exception as e:
-        print(e)
-        abort(400)
+    except Exception as error:
+        print(sys.exc_info())
+        raise error
 
 
 @API.route('/<int:id>', methods=['GET'])
@@ -43,11 +44,12 @@ def get_actor(payload, id):
         actor = Actor.query.filter(Actor.id == id).one_or_none()
 
         if actor is None:
-            abort(400, 'Invalid actor id')
+            abort(404, 'No record found for given actor id')
 
         return jsonify(actor.serialize())
-    except Exception:
-        abort(400)
+    except Exception as error:
+        print(sys.exc_info())
+        raise error
 
 
 @API.route('', methods=['POST'])
@@ -78,9 +80,9 @@ def create_actor(payload):
 
         return jsonify(actor.serialize())
 
-    except Exception as e:
-        print(e)
-        abort(500, f'Failed to insert. {e.description}')
+    except Exception as error:
+        print(sys.exc_info())
+        raise error
 
 
 @API.route('/<int:id>', methods=['PATCH'])
@@ -89,7 +91,7 @@ def edit_actor(payload, id):
     try:
         actor = Actor.query.filter(Actor.id == id).one_or_none()
         if (actor is None):
-            abort(400, 'Invalid actor id')
+            abort(404, 'No record found for specified actor id')
 
         data = json.loads(request.data)
         name = data.get('name', actor.name)
@@ -108,9 +110,9 @@ def edit_actor(payload, id):
 
         return jsonify(actor.serialize())
 
-    except Exception as e:
-        print(e)
-        abort(500, f'Failed to insert. {e.description}')
+    except Exception as error:
+        print(sys.exc_info())
+        raise error
 
 
 @API.route('/<int:id>', methods=['DELETE'])
@@ -118,15 +120,13 @@ def edit_actor(payload, id):
 def delete_actor(payload, id):
     try:
         actor = Actor.query.filter(Actor.id == id).first()
-        if actor is None:
-            abort(400, 'Invalid actor id.')
-
-        actor.delete()
+        if actor is not None:
+            actor.delete()
 
         return jsonify({
             "success": True
         })
 
-    except Exception as e:
-        print(e)
-        abort(500, 'Failed to delete record.')
+    except Exception as error:
+        print(sys.exc_info())
+        raise error

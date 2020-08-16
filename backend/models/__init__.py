@@ -1,15 +1,9 @@
 """ Defines SQLAlchemy Models """
-
+from dotenv import load_dotenv
 from flask_sqlalchemy import SQLAlchemy
-from os import environ as env
 
-DEFAULT_POSTGRES_URL = "postgres://{}@{}/{}?gssencmode=disable"
-database_name = env.get('DATABASE_NAME', "casting_agency")
-database_path = env.get('DATABASE_URL', DEFAULT_POSTGRES_URL.format(
-                                                'postgres',
-                                                'localhost:5432',
-                                                database_name))
 
+load_dotenv()
 db = SQLAlchemy()
 
 '''
@@ -18,10 +12,8 @@ setup_db(app)
 '''
 
 
-def setup_db(app, db_path=database_path):
+def setup_db(app):
     """ Setup Database """
-    app.config["SQLALCHEMY_DATABASE_URI"] = db_path
-    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
     db.init_app(app)
 

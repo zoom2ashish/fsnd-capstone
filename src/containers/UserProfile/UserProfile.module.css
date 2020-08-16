@@ -1,0 +1,14 @@
+.Token {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.copyAction {
+  display: flex;
+  margin-top: 12px;
+}
+
+.copyIcon {
+  margin-right: 12px;
+}
