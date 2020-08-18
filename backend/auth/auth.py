@@ -9,6 +9,7 @@ from flask import request
 
 AUTH0_DOMAIN = env.get('AUTH0_DOMAIN')
 API_AUDIENCE = env.get('AUTH0_API_AUDIENCE')
+DISABLE_AUTH = (env.get('DISABLE_AUTH_CHECK', default='False').lower() == 'true')
 ALGORITHMS = ['RS256']
 
 
@@ -130,10 +131,13 @@ def requires_auth(permission=''):
     def requires_auth_decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            token = get_token_auth_header()
-            payload = verify_decode_jwt(token)
-            check_permissions(permission, payload)
-            return func(payload, *args, **kwargs)
+            if DISABLE_AUTH is True:
+                return func(None, *args, **kwargs)
+            else:
+                token = get_token_auth_header()
+                payload = verify_decode_jwt(token)
+                check_permissions(permission, payload)
+                return func(payload, *args, **kwargs)
 
         return wrapper
     return requires_auth_decorator
