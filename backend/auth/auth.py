@@ -9,7 +9,7 @@ from flask import request
 
 AUTH0_DOMAIN = env.get('AUTH0_DOMAIN')
 API_AUDIENCE = env.get('AUTH0_API_AUDIENCE')
-DISABLE_AUTH = (env.get('DISABLE_AUTH_CHECK', default='False').lower() == 'true')
+DISABLE_AUTH = env.get('DISABLE_AUTH_CHECK', default='False').lower() == 'true'
 ALGORITHMS = ['RS256']
 
 

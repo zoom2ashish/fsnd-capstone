@@ -1,4 +1,4 @@
-import axios from './axios';
+import axios from './authenticated-axios';
 import { MovieListResultDto, MoviePostRequestDto, MovieDto } from '../dto';
 
 const MOVIES_BASE_URL = '/api/movies';

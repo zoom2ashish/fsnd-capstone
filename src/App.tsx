@@ -1,30 +1,17 @@
 import './App.css';
 
-import React, { useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import Actors from './containers/Actors/Actors';
+import Home from './containers/Home/Home';
 import Layout from './containers/Layout/Layout';
 import Movies from './containers/Movies/Movies';
-import Home from './containers/Home/Home';
-import { useAuth0 } from '@auth0/auth0-react';
-import axios from './services/axios';
 import UserProfile from './containers/UserProfile/UserProfile';
+import { AuthContext } from './context/auth-context';
 
 function App() {
-  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
-  const [token, setToken] = useState<string>('');
-  useEffect(() => {
-
-    (async() => {
-      if (isAuthenticated) {
-        const token = await getAccessTokenSilently();
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
-        setToken(token);
-      }
-    })();
-  }, [isAuthenticated, getAccessTokenSilently])
-
+  const { isAuthenticated, token } = useContext(AuthContext);
   const routes = isAuthenticated && token ? (
     <>
     <Switch>

@@ -6,6 +6,7 @@ import * as serviceWorker from "./serviceWorker";
 import "bootstrap/dist/css/bootstrap.css";
 import { BrowserRouter } from "react-router-dom";
 import { Auth0Provider } from "@auth0/auth0-react";
+import AuthContextProvider from './context/auth-context';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -15,9 +16,11 @@ ReactDOM.render(
       audience="casting-agency-api"
       redirectUri={window.location.origin}
     >
-      <BrowserRouter basename="/">
-        <App />{" "}
-      </BrowserRouter>
+      <AuthContextProvider>
+        <BrowserRouter basename="/">
+          <App />{" "}
+        </BrowserRouter>
+      </AuthContextProvider>
     </Auth0Provider>
   </React.StrictMode>,
   document.getElementById("root")

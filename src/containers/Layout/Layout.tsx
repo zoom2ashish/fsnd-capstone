@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { NavLink, Link, withRouter, RouteComponentProps } from 'react-router-dom';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
@@ -7,9 +7,10 @@ import Container from 'react-bootstrap/Container';
 import classes from './Layout.module.css';
 import { useAuth0, IdToken } from '@auth0/auth0-react';
 import Button from 'react-bootstrap/Button';
+import { AuthContext } from '../../context/auth-context';
 
 const Layout = (props: React.PropsWithChildren<RouteComponentProps>) => {
-  const { user, isAuthenticated, loginWithRedirect, logout } = useAuth0();
+  const { user, isAuthenticated, login, logout } = useContext(AuthContext);
 
   const userProfileClicked = () => {
     props.history.push('/userprofile');
@@ -26,9 +27,9 @@ const Layout = (props: React.PropsWithChildren<RouteComponentProps>) => {
     (<>
       <NavDropdown title={user ? user.name : 'Unknown' } id="collasible-nav-dropdown">
         <NavDropdown.Item onClick={() => userProfileClicked()}>View Profile</NavDropdown.Item>
-        <NavDropdown.Item onClick={() => logout({returnTo: window.location.origin, client_id: 'IrrwsvDC9WQZ404zksQ0ALJsbKGZwX4m' })}>Logout</NavDropdown.Item>
+        <NavDropdown.Item onClick={() => logout()}>Logout</NavDropdown.Item>
       </NavDropdown>
-    </>) : <Button onClick={() => loginWithRedirect()} variant="dark">Log In</Button>
+    </>) : <Button onClick={() => login()} variant="dark">Log In</Button>
 
   return (
     <Container className={classes.Layout + ' ' + 'shadow'}>

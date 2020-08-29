@@ -1,4 +1,4 @@
-import axios from './axios';
+import axios from './authenticated-axios';
 import { ActorListResultDto, ActorPostRequestDto, ActorDto } from '../dto';
 
 const ACTORS_BASE_URL = '/api/actors';
